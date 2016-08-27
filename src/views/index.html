@@ -5,8 +5,10 @@
     <meta charset="utf-8"/>
 </head>
 <body>
+<!--<app v-on:child-msg="handleIt"></app>-->  <!--在子组件上监听子组件派发的事件，触发父组件的方法，这个时候父组件监听的events将失效。两者只能存在一种监听方式 -->
 <app></app>
+<div>{{message}}</div>
 <script src="../js/lib/vue.js"></script>
-<script src="../../bin/testComponent.js"></script>
+<script src="../../bin/testComponent.js"></script>  <!--加载.vue组件文件-->
 </body>
 </html>

@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>slot分发内容</title>
+    <meta charset="utf-8"/>
+    <style>
+        .fade-transition {
+            transition: opacity .3s ease;
+        }
+        .fade-enter, .fade-leave {
+            opacity: 0;
+        }
+    </style>
+</head>
+<body>
+<my-component>
+    this is {{msg}}
+    <p slot="one">test has name slot</p>
+</my-component>
+<a href="javascript:;" v-on:click="changeComponent('home')">change home</a>  <!--动态加载组件-->
+<a href="javascript:;" v-on:click="changeComponent('posts')">change posts</a>
+<a href="javascript:;" v-on:click="changeComponent('archive')">change archive</a>
+<component :is="currentView" keep-alive  transition transition-mode="out-in">  <!--通过保留的 <component> 元素，动态地把当前组件绑定到它的 is 特性-->
+    <!-- 组件在 vm.currentview 变化时改变 -->
+    <!--keep-alive把切换出去的组件保留在内存中，可以保留它的状态或避免重新渲染，非活动组件将被缓存-->
+</component>
+<template id="myComponent">
+    <div>
+        <h1>This is my component!</h1>
+        <slot name="one"></slot> <!--有名字的slot ,对应组件属性slot值-->
+        <!--<slot> 标签的内容（没有属性的slot）视为回退内容。回退内容在子组件的作用域内编译，当宿主元素为空并且没有内容供插入时显示这个回退内容-->
+        <slot>如果没有分发内容则显示我。</slot>
+        <!--父组件的内容将被抛弃，除非子组件模板包含 <slot>--><!--如果子组件模板只有一个没有特性的 slot，父组件的整个内容将插到 slot 所在的地方并替换它-->
+    </div>
+</template>
+<script src="../js/lib/vue.js"></script>
+<script>
+    var myComponent = Vue.extend({  //注册构造器
+        template : '#myComponent'
+    });
+    Vue.component('my-component', myComponent); // 注册全局的组件my-component
+    var vm = new Vue({
+        el : 'body',
+        data : {
+            msg : 'hello',
+            currentView : 'home'
+        },
+        methods : {
+            changeComponent : function(view){
+                console.log(view)
+                this.currentView = view;
+            }
+        },
+        components : {
+            'home':{
+                template : '<h1>home</h1>',
+                activate : function(next){
+                    console.log('home activate');
+                    next();  //执行next继续接下来的动作
+                }
+            },
+            'posts':{
+                template : '<h1>posts</h1>',
+                /*在切换组件时，切入组件在切入前可能需要进行一些异步操作。为了控制组件切换时长，给切入组件添加 activate 钩子*/
+                /*注意 activate 钩子只作用于动态组件切换或静态组件初始化渲染的过程中，不作用于使用实例方法手工插入的过程中。*/
+                activate : function(next){
+                    console.log('posts activate')
+                    next();
+                }
+            },
+            'archive':{
+                template : '<h1>archive</h1>',
+                activate : function(next){
+                    console.log('archive activate')
+                    next();
+                }
+            }
+        }
+    });
+</script>
+</body>
+</html>

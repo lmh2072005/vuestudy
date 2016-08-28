@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>具有名字的路由</title>
+    <meta charset="utf-8"/>
+
+</head>
+<body>
+<div id="app">
+    <a v-link="{path:'/user/aaa'}">go to user</a>
+    <a v-link="{path:'/aaa/aaa'}">go to aaa</a>
+    <a v-link="{name:'user', params:{username: 123}}">go to userId</a>  <!--链接到该名字的路径-->
+    <router-view></router-view>
+</div>
+
+
+
+<template id="myComponent1">
+    <div>
+        aaa
+    </div>
+</template>
+<template id="myComponent2">
+    <div>
+        bbb
+    </div>
+</template>
+<script src="../js/lib/vue.js"></script>
+<script src="../js/lib/vue-router.js"></script>
+<script>
+    var myComponent1 = Vue.extend({  //注册构造器
+        template : '#myComponent1'
+    });
+    var myComponent2 = Vue.extend({  //注册构造器
+        template : '#myComponent2'
+    });
+    var app = Vue.extend({});
+    var router = new VueRouter();
+    router.map({
+        '/user/:username':{
+            component:myComponent1,
+            name : 'user'  //给一条路径加上一个名字能够让我们更方便地进行路径的跳转
+        },
+        '/aaa/:xxx':{
+            component:myComponent2,
+            name : 'aaa'
+        }
+    });
+    router.start(app, '#app');
+
+    router.go({ name: 'user', params: { username: 123 }})  //跳转路径
+</script>
+</body>
+</html>

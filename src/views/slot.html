@@ -15,7 +15,7 @@
 <body>
 <my-component>
     this is {{msg}}
-    <p slot="one">test has name slot</p>
+    <p slot="one">test has name slot</p>  <!--调用父组件的方法时注意：http://stackoverflow.com/questions/37225263/access-parent-methods-from-component-template-in-vuejs-->
 </my-component>
 <a href="javascript:;" v-on:click="changeComponent('home')">change home</a>  <!--动态加载组件-->
 <a href="javascript:;" v-on:click="changeComponent('posts')">change posts</a>

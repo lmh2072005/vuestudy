@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title></title>
+    <meta charset="utf-8"/>
+</head>
+<body>
+<!--有时候需要在变化数据并且dom更新后执行相关的操作，但是数据变化后dom并不会马上更新而是在下一次事件循环清空队列时更新-->
+<!--为了在数据变化之后等待 Vue.js 完成更新 DOM，可以在数据变化之后立即使用 Vue.nextTick(callback) 。回调在 DOM 更新完成后调用-->
+<div id="example">{{msg}}</div>
+
+<div>
+    <example></example>
+</div>
+<script src="../js/lib/vue.js"></script>
+<script>
+    Vue.component('example', {
+        template: '<span>{{msg}}</span><a href="javascript:;" v-on:click="updateMessage()">update msg</a>',
+        data: function () {
+            return {
+                msg: 'not updated '
+            }
+        },
+        methods: {
+            updateMessage: function () {
+                this.msg = 'updated '
+                console.log(this.$el.textContent) // => 'not updated'
+                this.$nextTick(function () {
+                    console.log(this.$el.textContent) // => 'updated'
+                })
+            }
+        }
+    })
+
+    var vm = new Vue({
+        el: 'body',
+        data: {
+            msg: '123'
+        }
+    })
+    vm.msg = 'new message' // 修改数据
+    console.log(vm.$el.textContent === 'new message') // false
+    Vue.nextTick(function () {
+        console.log(vm.$el.textContent === 'new message') // true  dom已经更新了
+    })
+
+
+
+</script>
+</body>
+</html>

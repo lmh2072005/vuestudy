@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>动态加载组件</title>
+    <meta charset="utf-8"/>
+
+</head>
+<body>
+<div id="app">
+    <a v-link="{path:'/user/aaa'}">go to user</a>
+    <a v-link="{path:'/aaa/bbb'}">go to aaa/bbb</a>
+    <router-view></router-view>
+</div>
+
+<script src="../js/lib/vue.js"></script>
+<script src="../js/lib/vue-router.js"></script>
+<script src="../../bin/asyncComponent.js"></script>
+</body>
+</html>

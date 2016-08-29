@@ -10,15 +10,16 @@ var ExtractTextPlugin = require("extract-text-webpack-plugin"); //合并独立�
 var path = require('path');
 module.exports = {
     entry: {
-        testComponent : './src/js/controllers/test.js'
+        testComponent : './src/js/controllers/test.js',
+        asyncComponent : './src/js/controllers/require-vue.js'
     },
     output: {  //打包后的输出目录
         path: __dirname+'/bin',
         filename: '[name].js', //[hash] 、[chunkhash](根据内容生成md5值)
         chunkFilename:'[name].chunk.js', //require.ensure用到，生成chunk的名字
-        publicPath:'bin/'  //require.ensure用到，相对路径，require.ensure会从publicPath加载文件,不写则默认是当前配置文件目录
+        publicPath:'../../bin/'  //require.ensure用到，相对路径，require.ensure会从publicPath加载文件,不写则默认是当前配置文件目录
     },
-    devtool: "#source-map",  //生成对应的map文件
+    //devtool: "#source-map",  //生成对应的map文件
     plugins: [
         new webpack.optimize.UglifyJsPlugin({
              compress: {

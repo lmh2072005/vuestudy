@@ -11,14 +11,29 @@ router.map({
         }
     },
     '/aaa/:name':{
+        name : 'message',
         component:function(resolve){
+            return false; //虽然return false了 但是url的路由还是会变化
             require.ensure(['../../components/app2.vue'], function(require){
                 var app2 = require('../../components/app2.vue');
                 resolve(app2);
             }, 'app2');
         }
+    },
+    '/bbb/:name':{
+        component:{
+            route :{
+                data : function(transition){
+                    console.log(123)
+
+                }
+            }
+        }
     }
 });
 
 router.start(app, '#app');
+//参考demo:
+// 1.https://github.com/vuejs/vue-hackernews
+// 2.https://github.com/cwsjoker/Cnode-vue-spa
 

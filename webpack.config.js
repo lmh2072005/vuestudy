@@ -10,7 +10,8 @@ var ExtractTextPlugin = require("extract-text-webpack-plugin"); //合并独立�
 var path = require('path');
 module.exports = {
     entry: {
-        testComponent : './src/js/controllers/test.js'
+        testComponent : './src/js/controllers/test.js',
+        main : './src/js/main.js'
     },
     output: {  //打包后的输出目录
         path: __dirname+'/bin',

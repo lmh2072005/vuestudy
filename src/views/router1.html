@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>嵌套router+动态片段</title>
+    <meta charset="utf-8"/>
+</head>
+<body>
+<a v-link="{ path:'/foo' }">go to foo</a>
+<a v-link="{ path:'/bar' }">go to bar</a>
+<a v-link="{ path:'/foo/cc' }">go to foo cc</a>  <!--熏染嵌套的router-->
+<a v-link="{ path:'/bar/cc' }">go to bar cc</a>
+<a v-link="{ path:'/user/danamic' }">go to user 动态片段</a>
+<a v-link="{ path:'/user/danamic/post/123' }">go to user 动态片段+id</a>
+<a v-link="{ path:'/user/xxx/danamic/post/123' }">go to 全匹配片段</a>
+<router-view></router-view>
+
+<!--template-->
+<template id="foo">
+    <h6>this is foo{{$route.path}}--{{$route.params | jsonString}}--{{$route.query.a}}--{{$route.name}}--{{$route.customField}}</h6>
+    <router-view></router-view>  <!--嵌套的外链-->
+</template>
+
+<template id="bar">
+    <h6>this is bar</h6>
+    <router-view></router-view>
+</template>
+
+<template id="cc">
+    <h6>this is cc</h6>
+</template>
+
+<script src="../js/lib/vue.js"></script>
+<script src="../js/lib/vue-router.js"></script>
+<script>
+    Vue.filter('jsonString', function(val){
+        return JSON.stringify(val);
+    })
+    var foo = Vue.extend({
+        template : '#foo'
+    });
+    var bar = Vue.extend({
+        template : '#bar'
+    });
+    var cc = Vue.extend({
+        template : '#cc'
+    });
+    var App = Vue.extend({});
+    var router = new VueRouter();
+    router.map({
+        '/foo':{
+            component : foo,
+            customField : 'field',//自定义字段,会被拷贝到最终的路由对象上.当 /foo 被匹配时，$route.customField 的值将会是 field.如果一个子路径和一个父路径有相同的字段，则子路径的值会覆盖父路径的值
+            subRoutes : {
+                '/cc':{
+                    component : cc
+                },
+                '/':{  /*创建默认的子路由*/
+                    component : {
+                        template : 'this is the default router'
+                    }
+                }
+            }
+        },
+        '/bar':{
+            component : bar,
+            subRoutes : {
+                '/cc':{
+                    component : cc
+                }
+            }
+        },
+        //动态片段使用以冒号开头的路径片段定义,当路径匹配一个含有动态片段的路由规则时，动态片段的信息可以从 $route.params 中获得
+        '/user/:username':{  //路由支持动态片段（片段指的是 URL 中的一部分，比如/user/test这里的是test）
+            component : {
+                template : '<p>username is {{$route.params.username}}</p>'
+            }
+        },
+        '/user/:username/post/:post_id':{
+            component : {
+                template : '<p>username is {{$route.params.username}}, post_id is {{$route.params.post_id}}</p>'
+            }
+        },
+        //全匹配片段,例如 /foo/*any 会匹配任何以 /foo/ 开头的路径,匹配的部分也会被解析为 $route.params 中的一个键值对。
+        '/user/*any':{  //比如匹配/user/a/b/c	等等
+            component : {
+                template : '<p>any is {{$route.params.any}}</p>'
+            }
+        }   //即匹配全匹配片段，又匹配动态片段的，会优先匹配动态片段
+    });
+    router.start(App, 'body');
+</script>
+</body>
+</html>

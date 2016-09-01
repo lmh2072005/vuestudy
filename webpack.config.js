@@ -11,11 +11,8 @@ var path = require('path');
 module.exports = {
     entry: {
         testComponent : './src/js/controllers/test.js',
-<<<<<<< HEAD
-        main : './src/js/main.js'
-=======
+        main : './src/js/main.js',
         asyncComponent : './src/js/controllers/require-vue.js'
->>>>>>> 692648446aa664219484250d4907b57f80837d1e
     },
     output: {  //打包后的输出目录
         path: __dirname+'/bin',
@@ -64,6 +61,10 @@ module.exports = {
             //{test:/\.css$/, loader:ExtractTextPlugin.extract("style-loader", "css-loader")}
         ]
     },
+    babel: {
+        // 告诉babel你要解析的语言
+        presets: ['es2015']
+    },
     resolve :{
         extentions:["","js","vue"], //当requrie的模块找不到时，添加这些后缀
         alias : {
@@ -74,3 +75,4 @@ module.exports = {
 
 /*webpack uglify
 vue*/
+ /*http://javascript.ruanyifeng.com/nodejs/packagejson.html   package学习教程*/

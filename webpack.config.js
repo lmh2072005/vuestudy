@@ -76,3 +76,4 @@ module.exports = {
 /*webpack uglify
 vue*/
  /*http://javascript.ruanyifeng.com/nodejs/packagejson.html   package学习教程*/
+/*https://www.zhihu.com/question/29289483 开源协议*/

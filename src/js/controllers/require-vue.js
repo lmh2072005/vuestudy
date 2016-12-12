@@ -40,10 +40,14 @@ router.map({
      canReuse*/ //决定组件是否可以被重用。如果一个组件不可以重用，当前实例会被一个新的实例替换，这个新实例会经历正常的验证和激活阶段。
     '/bbb/:name':{
         component:{
+            template : '<h1>test activate</h1>',
             route :{
                 data : function(transition){
                     console.log(123)
 
+                },
+                activate : function(){
+                    console.log(333)
                 }
             }
         }

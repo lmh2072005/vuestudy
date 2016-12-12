@@ -12,7 +12,8 @@ module.exports = {
     entry: {
         testComponent : './src/js/controllers/test.js',
         main : './src/js/main.js',
-        asyncComponent : './src/js/controllers/require-vue.js'
+        asyncComponent : './src/js/controllers/require-vue.js',
+        img : './src/js/controllers/img.js'
     },
     output: {  //打包后的输出目录
         path: __dirname+'/bin',
@@ -43,7 +44,7 @@ module.exports = {
     module:{
         loaders:[
             {
-                test: /\.png$/,
+                test: /(\.png|\.jpg)$/,
                 loader: "url-loader?limit=10240"
             },
             {

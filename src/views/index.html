@@ -10,5 +10,11 @@
 <div>{{message}}</div>
 <script src="../js/lib/vue.js"></script>
 <script src="../../bin/testComponent.js"></script>  <!--加载.vue组件文件-->
+<script>
+    window.onunload = function(){
+        //alert(1)
+        console.log(123)
+    }
+</script>
 </body>
 </html>

@@ -1,0 +1,77 @@
+
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Pulldown Load</title>
+    <meta name="viewport" content="width=device-width, height=device-height, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=0" />
+    <style>
+        html,body{
+            overflow: hidden;
+        }
+    </style>
+</head>
+<body style="overflow:hidden;">
+<div id="MyScroller" class="main" style="height: 60%; ">
+    <ul id="Content" class="dropdown-list">
+    </ul>
+</div>
+<script src="../js/lib/iscroll-probe.js"></script>
+<script type="text/javascript">
+
+    // 模拟数据
+    var arr = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18 ,19 , 20];
+
+    function getContents() {
+        var li = "";
+        for (var i = 0; i < arr.length; i++) {
+            li += "<li>Item" + arr[i] + "</li>";
+        }
+        return li;
+    }
+
+    function appendContent(content) {
+        var ul = document.getElementById('Content');
+        ul.innerHTML = ul.innerHTML + content;
+    }
+
+    window.onload = function() {
+
+        // 初始化body高度
+        document.body.style.height = Math.max(document.documentElement.clientHeight, window.innerHeight || 0) + 'px';
+
+        appendContent(getContents());
+
+        /*var pullDown = document.querySelector("#PullDown"),
+                pullUp = document.querySelector("#PullUp"),
+                isPulled = false; // 拉动标记*/
+
+        var myScroll = new IScroll('#MyScroller', {
+            probeType: 3,
+            mouseWheel: true,
+            scrollbars: true,
+            preventDefault: false,
+            fadeScrollbars: true
+        });
+
+        myScroll.on('scroll', function() {
+            var height = this.y,
+                    bottomHeight = this.maxScrollY - height;
+
+            console.log("height:" + height);
+            console.log("bottomHeight:" + bottomHeight);
+
+
+        })
+
+       /* myScroll.on('scrollEnd', function() { // 滚动结束
+            if (isPulled) { // 如果达到触发条件，则执行加载
+                isPulled = false;
+                appendContent(getContents());
+                myScroll.refresh();
+            }
+        });*/
+    }
+</script>
+</body>
+
+</html>
